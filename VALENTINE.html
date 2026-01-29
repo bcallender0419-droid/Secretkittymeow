@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #ffe6e6;
+            color: #e24343;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+            padding: 30px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hearts-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .heart {
+            position: absolute;
+            color: rgba(255, 77, 109, 0.2);
+            font-size: 20px;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+        
+        .content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .intro-text {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #8a1c1c;
+        }
+        
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 40px;
+            color: #c70c2e;
+        }
+        
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+        
+        .yes-button {
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            font-family: 'Dancing Script', cursive;
+        }
+        
+        .yes-button:hover {
+            background-color: #d54059;
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.6);
+        }
+        
+        .no-button {
+            background-color: #f1f1f1;
+            color: #555;
+            border: none;
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            font-family: 'Dancing Script', cursive;
+            position: relative;
+        }
+        
+        .no-button:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .message {
+            font-size: 2rem;
+            margin-top: 30px;
+            font-family: 'Dancing Script', cursive;
+            color: #ff4d6d;
+            min-height: 60px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        
+        .footer {
+            margin-top: 40px;
+            color: #888;
+            font-size: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .intro-text {
+                font-size: 1.3rem;
+            }
+            
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            .yes-button, .no-button {
+                padding: 15px 30px;
+                font-size: 1.5rem;
+            }
+            
+            .buttons-container {
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .intro-text {
+                font-size: 1.1rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .yes-button, .no-button {
+                padding: 12px 25px;
+                font-size: 1.2rem;
+            }
+            
+            .message {
+                font-size: 1.5rem;
+            }
+            
+            .buttons-container {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hearts-bg" id="heartsContainer"></div>
+        
+        <div class="content">
+            <div class="heart-icon">
+                <i class="fas fa-heart"></i>
+            </div>
+            
+            <p class="intro-text">I have something very important to ask you...</p>
+            
+            <h1>Will You Be My Valentine?</h1>
+            
+            <div class="buttons-container">
+                <button class="yes-button" id="yesButton">
+                    Yes!!!
+                </button>
+                
+                <button class="no-button" id="noButton">
+                    No I hate you...
+                </button>
+            </div>
+            
+            <div class="message" id="message"></div>
+            
+            <div class="footer">
+                I love you 
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Create floating hearts in background
+        const heartsContainer = document.getElementById('heartsContainer');
+        for (let i = 0; i < 20; i++) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '<i class="fas fa-heart"></i>';
+            heart.style.left = `${Math.random() * 100}%`;
+            heart.style.animationDelay = `${Math.random() * 15}s`;
+            heart.style.fontSize = `${Math.random() * 20 + 10}px`;
+            heartsContainer.appendChild(heart);
+        }
+        
+        // Get elements
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+        const message = document.getElementById('message');
+        
+        // Yes button click handler
+        yesButton.addEventListener('click', function() {
+            message.textContent = "Yay! You've made me the happiest person! 💖";
+            message.classList.add('show');
+            
+            // Create celebration hearts
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    createCelebrationHeart();
+                }, i * 100);
+            }
+            
+            // Disable both buttons
+            yesButton.disabled = true;
+            noButton.disabled = true;
+            yesButton.style.opacity = '0.7';
+            noButton.style.opacity = '0.7';
+        });
+        
+        // No button mouseover handler - makes the button move away
+        noButton.addEventListener('mouseover', function() {
+            moveNoButton();
+        });
+        
+        // No button click handler - try to catch it!
+        noButton.addEventListener('click', function() {
+            message.textContent = "That's not very nice :(";
+            message.classList.add('show');
+            
+            // Move the button again
+            moveNoButton();
+            
+            // Clear message after 2 seconds
+            setTimeout(() => {
+                message.classList.remove('show');
+            }, 2000);
+        });
+        
+        // Function to move the "No" button to a random position
+        function moveNoButton() {
+            // Store original position
+            const originalTransform = noButton.style.transform;
+            
+            // Calculate random movement
+            const randomX = Math.floor(Math.random() * 200) - 100; // -100 to 100px
+            const randomY = Math.floor(Math.random() * 200) - 100; // -100 to 100px
+            
+            // Apply random movement
+            noButton.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            noButton.style.transition = 'transform 0.2s ease';
+            
+            // Return to original position after a moment
+            setTimeout(() => {
+                noButton.style.transform = originalTransform;
+            }, 200);
+        }
+        
+        // Function to create celebration hearts
+        function createCelebrationHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '<i class="fas fa-heart"></i>';
+            heart.style.position = 'fixed';
+            heart.style.color = '#ff4d6d';
+            heart.style.fontSize = `${Math.random() * 25 + 15}px`;
+            heart.style.left = `${Math.random() * 100}%`;
+            heart.style.top = '100%';
+            heart.style.zIndex = '1000';
+            heart.style.opacity = '0.9';
+            heart.style.pointerEvents = 'none';
+            
+            // Random animation
+            const animationDuration = Math.random() * 3 + 2;
+            heart.style.animation = `float ${animationDuration}s forwards`;
+            
+            document.body.appendChild(heart);
+            
+            // Remove the heart after animation
+            setTimeout(() => {
+                heart.remove();
+            }, animationDuration * 1000);
+        }
+        
+        // Update the float animation for celebration hearts
+        const styleSheet = document.styleSheets[0];
+        styleSheet.insertRule(`
+            @keyframes float {
+                0% { 
+                    transform: translateY(0) rotate(0deg); 
+                    opacity: 0.9;
+                }
+                100% { 
+                    transform: translateY(-100vh) rotate(360deg); 
+                    opacity: 0;
+                }
+            }
+        `, styleSheet.cssRules.length);
+    </script>
+</body>
+</html>
